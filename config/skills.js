@@ -134,6 +134,11 @@ module.exports = {
 			'*': {
 				length: 1100,
 				distance: 138.28,
+				noInterrupt:[32];
+				},
+				0: true,
+				1: true,
+				2: true
 			},
 		19: { // Rising Fury
 			'*': { noInterrupt: [32] },
@@ -1039,8 +1044,8 @@ module.exports = {
 				noRetry: true
 			}
 		},
-		/*15: { // Vampiric Blow
-            '*': {                    // Chained VB Usage: 1. "Show default Chained Skills" in the Chained Skills menu must be on.        
+		15: { // Vampiric Blow
+            : {                   	  // Chained VB Usage: 1. "Show default Chained Skills" in the Chained Skills menu must be on.        
 				type: 'chargeCast',  //                    2. Must be in combat when used.  
 				length: 1940        //                    Else the animation of VB won't go off causing slight desync.
 			 },                                                		                               
@@ -1079,7 +1084,7 @@ module.exports = {
 				noInterrupt: [2, 4, 24, 25, 30]
 			},
             14: { distance: 72.78 }
-		},*/
+		},
 		16: { // Fearsome Shout
 		    0: {
 				fixedSpeed: 1,
@@ -2269,6 +2274,291 @@ module.exports = {
 			0: { length: [385, 575] }
 		}*/
 	},
+	10: { // Brawler
+		1: { // Punch
+			'*': {
+				length: 1575,
+				distance: 71.28,
+				triggerAbnormal: { 10153060: 3000 },
+				consumeAbnormalEnd: 10153060,
+				noInterrupt: ['1-3'],
+				chains: {
+					'1-0': 1,
+					'1-1': 2,
+					'1-2': 3,
+					'1-30': 1,
+					'1-31': 32,
+					'1-32': 2,
+					'2-2': 31,
+					'2-3': 31,
+					2: 30
+				},
+				noRetry: true
+			},
+			0: true,
+			1: {
+				length: 1575,
+				distance: 68.63
+			},
+			2: {
+				length: 925,
+				distance: 50.7
+			},
+			3: {
+				length: 1725,
+				distance: 121
+			},
+			30: true,
+			31: true,
+			32: {
+				length: 1575,
+				distance: 68.63
+			}
+		},
+		2: { // Counter
+			'*': { noRetry: true },
+			1: {
+				length: 1200,
+				distance: 139.97,
+				triggerAbnormal: { 10153001: 0x7fffffff },
+				consumeAbnormalEnd: 10153001
+			},
+			2: {
+				length: 1800,
+				distance: 84,
+				triggerAbnormal: { 10153002: 0x7fffffff },
+				consumeAbnormalEnd: 10153002
+			},
+			3: {
+				length: 1925,
+				distance: 131.2,
+				triggerAbnormal: { 10153003: 0x7fffffff },
+				consumeAbnormalEnd: 10153003
+			},
+			4: {
+				length: 1950,
+				distance: 142.86,
+				triggerAbnormal: { 10153004: 0x7fffffff },
+				consumeAbnormalEnd: 10153004
+			},
+			10: {
+				type: 'holdInfinite',
+				fixedSpeed: 1,
+				length: 800,
+				distance: 33.38,
+				triggerAbnormal: { 10153006: 0x7fffffff },
+				consumeAbnormalEnd: 10153006
+			},
+			11: {
+				type: 'holdInfinite',
+				fixedSpeed: 1,
+				length: 800,
+				distance: 33.38,
+				triggerAbnormal: { 10153005: 0x7fffffff },
+				consumeAbnormalEnd: 10153005
+			},
+			12: {
+				/*abnormals: {
+					10153061: { chain: 1 },
+					10153062: { chain: 2 },
+					10153063: { chain: 3 },
+					10153064: { chain: 4 }
+				},*/
+				chains: {
+					'1-0': 1,
+					'1-1': 2,
+					'1-2': 3,
+					'1-3': 4,
+					'1-30': 1,
+					'1-31': 1,
+					'1-32': 2
+				}
+			}
+		},
+		/*3: { // Divine Wrath
+			0: {
+				fixedSpeed: 1,
+				length: 29900
+			},
+			1: {
+				type: 'lockonCast',
+				length: [,,],
+				distance: [,,]
+			}
+		},*/
+		4: { // Ground Pound
+			'*': { length: 3225 },
+			0: true,
+			30: true
+		},
+		5: { // Bullrush
+			0: {
+				fixedSpeed: 1,
+				length: [2950, 650],
+				distance: [0, 135]
+			}
+		},
+		6: { // Haymaker
+			'*': {
+				length: [1025, 1825],
+				distance: [0, 171.61],
+				abnormals: {
+					31120: { chain: 31 }
+				},
+				chains: {
+					1: 30,
+					2: 30,
+					'3-1': 30,
+					4: 30,
+					5: 30,
+					6: 30,
+					7: 30,
+					8: 30,
+					9: 30,
+					14: 30,
+					15: 30,
+					16: 30,
+					17: 30,
+					18: 30,
+					20: 30,
+					40: 30
+				}
+			},
+			1: true,
+			2: true,
+			30: true,
+			31: true
+		},
+		7: { // Roundhouse Kick
+			'*': {
+				length: 860,
+				distance: 105,
+				noInterrupt: [7],
+				hasChains: true
+			},
+			0: true,
+			30: true
+		},
+		8: { // Piledriver
+			'*': {
+				length: 1950,
+				distance: 164.94,
+				abnormals: {
+					31120: { chain: 31 }
+				},
+				chains: {
+					1: 30,
+					2: 30,
+					'3-1': 30,
+					4: 30,
+					5: 30,
+					6: 30,
+					7: 30,
+					9: 30,
+					14: 30,
+					15: 30,
+					16: 30,
+					17: 30,
+					18: 30,
+					20: 30,
+					40: 30
+				}
+			},
+			1: true,
+			2: true,
+			30: { fixedSpeed: 1},
+			31: true
+		},
+		9: { // Jackhammer
+			'*': {
+				fixedSpeed: 1,
+				length: 1540,
+				distance: 40,
+				noInterrupt: [9],
+				abnormals: {
+					31120: { chain: 31 }
+				},
+				hasChains: true
+			},
+			1: true,
+			2: true,
+			30: true,
+			31: true
+		},
+		10: { // Counterpunch
+			'*': {
+				length: 1850,
+				distance: 155,
+				requiredBuff: 10153000,
+				chains: {
+					1: 30,
+					2: 30,
+					'3-1': 30,
+					4: 30,
+					5: 30,
+					6: 30,
+					7: 30,
+					8: 30,
+					9: 30,
+					14: 30,
+					15: 30,
+					16: 30,
+					17: 30,
+					18: 30,
+					20: 30,
+					40: 30
+				}
+			},
+			0: true,
+			30: true
+		},
+		13: { // Provoke
+			'*': {
+				fixedSpeed: 1,
+				length: 1275
+			},
+			1: true,
+			2: true
+		},
+		14: { // Infuriate
+			'*': { length: 1650 },
+			1: true,
+			2: true,
+			30: true
+		},
+		16: { // Flip Kick
+			'*': {
+				length: 2050,
+				distance: 134,
+				hasChains: true
+			},
+			1: true,
+			2: true,
+			30: true
+		},
+		21: { // Mounting Rage
+			'*': {
+				fixedSpeed: 1,
+				length: 1275
+			},
+			1: true,
+			2: true
+		},
+		40: { // Quick Dash
+			'*': {
+				fixedSpeed: 1,
+				length: 580,
+				distance: 144,
+				forceClip: true,
+				hasChains: true,
+				noRetry: true
+			},
+			0: true, // TODO: Figure out which animations are correct
+			1: true,
+			30: true,
+			31: true
+			},
+	},
 	8: { // Reaper
 		'*': { consumeAbnormal: [10151020, 10151021, 10151022, 10151023, 10151040, 10151041, 10151042] },
 		1: { // Spiral Barrage
@@ -2859,7 +3149,7 @@ module.exports = {
 		40: { // Rolling Reload
 			0: {
 				fixedSpeed: 1,
-				length: 800,
+				length: 930,
 				distance: 172.5,
 				forceClip: true
 			}
@@ -3814,7 +4104,7 @@ module.exports = {
 		10: { // Dream Slash
 			'*': {
 				length: 1775,
-				distance: 11.18,
+				distance: 11.78,
 				noInterrupt: [10],
 				glyphs: {
 					33020: { speed: 1.2 }
