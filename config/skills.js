@@ -134,7 +134,7 @@ module.exports = {
 			'*': {
 				length: 1100,
 				distance: 138.28,
-				noInterrupt:[32];
+				noInterrupt:[32]
 				},
 				0: true,
 				1: true,
