@@ -1045,12 +1045,12 @@ module.exports = {
 			}
 		},
 		15: { // Vampiric Blow
-            0: {                    // Chained VB Usage: 1. "Show default Chained Skills" in the Chained Skills menu must be on.        
+            		0: {                    // Chained VB Usage: 1. "Show default Chained Skills" in the Chained Skills menu must be on.        
 				type: 'chargeCast',  //                    2. Must be in combat when used.  
 				length: 1940        //                    Else the animation of VB won't go off causing slight desync.
 			 },                                                		                               
                          
-                		type: 'charging',       
+                	1:{	type: 'charging',       
 				length: [800, 800, 800],	
 				noInterrupt: [2, 4, 24, 25, 30],
 				abnormals: {
