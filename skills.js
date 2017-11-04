@@ -1,27 +1,44 @@
-const JITTER_COMPENSATION	= true,
+const JITTER_COMPENSATION	= false,
 	JITTER_ADJUST			= 0,		//	This number is added to your detected minimum ping to get the compensation amount.
-	SKILL_RETRY_COUNT		= 2,		//	Number of times to retry each skill (0 = disabled). Recommended 1-3.
-	SKILL_RETRY_MS			= 30,		/*	Time to wait between each retry.
+	SKILL_RETRY_COUNT		= 1,		//	Number of times to retry each skill (0 = disabled). Recommended 1-3.
+	SKILL_RETRY_MS			= 100,		/*	Time to wait between each retry.
 											SKILL_RETRY_MS * SKILL_RETRY_COUNT should be under 100, otherwise skills may go off twice.
 										*/
 	SKILL_RETRY_JITTERCOMP	= 15,		//	Skills that support retry will be sent this much earlier than estimated by jitter compensation.
 	SKILL_RETRY_ALWAYS		= false,	//	Setting this to true will reduce ghosting for extremely short skills, but may cause other skills to fail.
 	SKILL_DELAY_ON_FAIL		= true,		//	Basic initial desync compensation. Useless at low ping (<50ms).
-	SERVER_TIMEOUT			= 200,		/*	This number is added to your maximum ping + skill retry period to set the failure threshold for skills.
+	SERVER_TIMEOUT			= 2700,		/*	This number is added to your maximum ping + skill retry period to set the failure threshold for skills.
 											If animations are being cancelled while damage is still applied, increase this number.
+											Setting this too low will cause Zerk's charge skills after evasive smash get animation cancelled
+											Setting this too high will stop ghost/fake skills too late
 										*/
 	FORCE_CLIP_STRICT		= true,		/*	Set this to false for smoother, less accurate iframing near walls.
 											Warning: Will cause occasional clipping through gates when disabled. Do NOT abuse this.
 										*/
+	RACE_SPECIALIZE			= true,		/*	Set this to true will let SP use specialized length and distance data for the race,
+											Set this to false will use data of elin's for non-raced locked classes and F.Cast's for gunner.
+										*/
 	DEFEND_SUCCESS_STRICT	= true,		//	Set this to false to see Brawler's Perfect Block icon at very high ping (warning: may crash client).
-	DEBUG					= false,
-	DEBUG_LOC				= false,
+	DEBUG					= true,
+	DEBUG_LOC				= true,
 	DEBUG_GLYPH				= false
 
 const {protocol, sysmsg} = require('tera-data-parser'),
 	Ping = require('./ping'),
-	AbnormalityPrediction = require('./abnormalities'),
-	skills = require('./config/skills')
+	AbnormalityPrediction = require('./abnormalities')
+	races = {
+		0: { name : 'human_m'},
+		1: { name : 'human_f'},
+		2: { name : 'highelf_m'},
+		3: { name : 'highelf_f'},
+		4: { name : 'aman_m'},
+		5: { name : 'aman_f'},
+		6: { name : 'castanic_m'},
+		7: { name : 'castanic_f'},
+		8: { name : 'popori'},
+		9: { name : 'elin'},
+		10:{ name : 'baraka'}
+	};
 
 const INTERRUPT_TYPES = {
 	'nullChain': 4,
@@ -69,15 +86,24 @@ module.exports = function SkillPrediction(dispatch) {
 		stageEndTime = 0,
 		stageEndTimeout = null,
 		debugActionTime = 0
+		
+	let skills;
 
 	dispatch.hook('S_LOGIN', 1, event => {
 		skillsCache = {}
 		;({cid, model} = event)
-		race = Math.floor((model - 10101) / 100)
+		race = Math.floor((model - 10101) / 100);
 		job = (model - 10101) % 100
 
-		if(DEBUG) console.log('Class', job)
-
+		if(DEBUG) {
+			console.log('Race', race)
+			console.log('Class', job)
+		}
+		if(RACE_SPECIALIZE){
+			skills = require('./config/'+ races[race].name);
+		}else {
+			skills = require('./config/skills');
+		}
 		hookInventory()
 	})
 
@@ -618,11 +644,13 @@ module.exports = function SkillPrediction(dispatch) {
 
 					if(!currentAction || currentAction.skill != event.skill) sendInstantMove(oopsLocation)
 				}
-
+				
+				// deal with evasive smash, which interrupts any zerk's charge skills without sending S_ACTION_END of the charge skill, resulting in your next charge skill getting cancelled
+				//if(job == 3 && skillId(event.skill)[0] == 24 && skillId(event.skill)[0] == 0)
 				// If the server sends 2 S_ACTION_STAGE in a row without a S_ACTION_END between them and the last one is an emulated skill,
 				// this stops your character from being stuck in the first animation (although slight desync will occur)
 				if(serverAction && serverAction == currentAction && !skillInfo(currentAction.skill)) sendActionEnd(6)
-
+				
 				serverAction = event
 				return false
 			}
