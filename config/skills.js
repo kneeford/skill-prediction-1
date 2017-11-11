@@ -2,19 +2,6 @@
 	* '*' can be used in place of the skill or sub-skill to set default values
 	* Processing order is 'noInterrupt' > 'chains' > 'abnormals'
 	* Default race is Elin unless specified
-
-	Races:
-	0 = Male Human
-	1 = Female Human
-	2 = Male High Elf
-	3 = Female High Elf
-	4 = Male Aman
-	5 = Female Aman
-	6 = Male Castanic
-	7 = Female Castanic
-	8 = Popori
-	9 = Elin
-	10 = Baraka
 */
 
 module.exports = {
